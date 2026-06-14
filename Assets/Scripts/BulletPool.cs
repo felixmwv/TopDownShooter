@@ -6,14 +6,22 @@ public class BulletPool
     private const float MAX_RANGE = 30f;
 
     private readonly Bullet[] _bullets;
-
-    public BulletPool(Transform[] bulletTransforms)
+    private readonly Transform _playerTransform;
+    public Bullet[] GetBullets() => _bullets;
+    
+    public BulletPool(Transform[] bulletTransforms, Transform playerTransform)
     {
+        _playerTransform = playerTransform;
         _bullets = new Bullet[bulletTransforms.Length];
 
         for (int i = 0; i < bulletTransforms.Length; i++)
         {
-            _bullets[i] = new Bullet(bulletTransforms[i]);
+            var sr = bulletTransforms[i].GetComponent<SpriteRenderer>();
+            float radius = sr != null
+                ? Mathf.Min(sr.bounds.extents.x, sr.bounds.extents.y) * 4f
+                : 0.1f;
+
+            _bullets[i] = new Bullet(bulletTransforms[i], radius);
             bulletTransforms[i].gameObject.SetActive(false);
         }
     }
@@ -26,7 +34,7 @@ public class BulletPool
 
             bullet.Transform.position += (Vector3)(bullet.Velocity * deltaTime);
 
-            if (((Vector2)bullet.Transform.position).magnitude > MAX_RANGE)
+            if (Vector2.Distance(bullet.Transform.position, _playerTransform.position) > MAX_RANGE)
                 Deactivate(bullet);
         }
     }

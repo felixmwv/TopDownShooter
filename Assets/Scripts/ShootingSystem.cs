@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class ShootingSystem
 {
-    private const float FIRE_RATE = 0.15f;
+    private const float FIRE_RATE = 0.1f;
 
     private readonly BulletPool _bulletPool;
     private readonly Transform _playerTransform;

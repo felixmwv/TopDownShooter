@@ -3,12 +3,14 @@ using UnityEngine;
 public class Bullet
 {
     public readonly Transform Transform;
+    public readonly float ColliderRadius;
     public bool IsActive;
     public Vector2 Velocity;
 
-    public Bullet(Transform transform)
+    public Bullet(Transform transform, float colliderRadius)
     {
         Transform = transform;
+        ColliderRadius = colliderRadius;
         IsActive = false;
     }
 }
